@@ -1,0 +1,41 @@
+<div ng-controller="RegisterController">
+	<h1>Register</h1>
+    <form name="registerForm" novalidate class="form-horizontal" ng-submit="register()">
+        <div class="col-sm-10">
+            <div class="form-group">
+                <label for="usuario" class="col-sm-2 control-label">Usuario</label>
+                <div class="col-sm-10" >
+                    <input type="text" name="name" class="form-control" ng-model="model.name" required>
+                    <div ng-show="registerForm.name.$dirty && registerForm.name.$error.required" class="alert alert-danger alert-dismissible" role="alert">
+	                  <strong>The name is required</strong> 
+	                </div>
+                </div>
+                
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" name="password" ng-model="model.password" class="form-control" required>
+                    <div ng-show="registerForm.password.$dirty && registerForm.password.$error.required" class="alert alert-danger alert-dismissible" role="alert">
+	                  <strong>The password is required</strong> 
+	                </div>
+                </div>
+                
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">
+                    <div ng-show="wrongRegister == ''" class="alert alert-danger alert-dismissible" role="alert">
+                        <strong>Ya existe un usuario con ese nombre, intenta con otro.</strong> 
+                    </div>
+                </div>
+            </div>
+
+            <div>
+
+                <button class="btn btn-primary pull-right" type="submit" ng-disabled="registerForm.$invalid">Enviar</button>
+            </div>
+        </div>
+
+    </form>
+</div>

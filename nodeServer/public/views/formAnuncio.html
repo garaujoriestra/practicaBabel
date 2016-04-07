@@ -1,0 +1,73 @@
+<div ng-controller="NuevoAnuncioController">
+    <h1 class="text-primary">Agregar una nueva subasta</h1>
+    <div class="alert alert-success" ng-show="successMessage" ng-bind-html="successMessage">
+	</div>
+	<div class="alert alert-error" ng-show="errorMessage">
+		{{serrorMessage}}
+	</div>
+    <form name="newSaleForm" novalidate class="form-horizontal" ng-submit="saveSale()">
+        <div class="col-sm-10">
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Nombre</label>
+                <div class="col-sm-10" >
+                    <input type="text" name="name" class="form-control" ng-model="model.name" required>
+                    <div ng-show="newSaleForm.name.$dirty && newSaleForm.name.$error.required" class="alert alert-danger alert-dismissible" role="alert">
+	                  <strong>El nombre es obligatorio</strong> 
+	                </div>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="description" class="col-sm-2 control-label">Descripción</label>
+                <div class="col-sm-10" >
+                    <textarea name="description" rows="5" class="form-control" ng-model="model.description"></textarea>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="picture" class="col-sm-2 control-label">Imagen</label>
+                <div class="col-sm-10">
+                    <input type="url" name="picture" ng-model="model.picture" class="form-control" required>
+                    <div ng-show="newSaleForm.picture.$dirty && newSaleForm.picture.$error.required" class="alert alert-danger alert-dismissible" role="alert">
+	                  <strong>La imagen es obligatoria.</strong> 
+	                </div>
+	                <div class="alert alert-warning alert-dismissible" role="alert" ng-show="newSaleForm.picture.$dirty && newSaleForm.picture.$error.url">
+					  	<strong>Porfavor, escriba una URL de imagen correcta.</strong>
+					</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="minimumPrice" class="col-sm-2 control-label">Precio Mínimo</label>
+                <div class="col-sm-10" >
+                    <input type="number" name="minimumPrice" class="form-control" ng-model="model.minimumPrice" required min="1">
+                    <div ng-show="newSaleForm.minimumPrice.$dirty && newSaleForm.minimumPrice.$error.required" class="alert alert-danger alert-dismissible" role="alert">
+	                  <strong>El precio mínimo de la primera puja es obligatorio.</strong> 
+	                </div>
+	                <div class="alert alert-warning alert-dismissible" role="alert" ng-show="newSaleForm.minimumPrice.$dirty && (newSaleForm.minimumPrice.$error.number || newSaleForm.minimumPrice.$error.min)">
+					  	<strong>El precio mínimo es 1.</strong>
+					</div>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="timeToSale" class="col-sm-2 control-label">Duración Subasta</label>
+                <div class="col-sm-10" >
+                    <input type="number" name="timeToSale" class="form-control" ng-model="model.timeToSale" required  min="0" max="10">
+                    <div class="alert alert-warning alert-dismissible" role="alert" ng-show="newSaleForm.rating.$dirty && newSaleForm.rating.$error.required">
+					  	<strong>La duración de la subasta es obligatoria.</strong> 
+					</div>
+					<div class="alert alert-warning alert-dismissible" role="alert" ng-show="newSaleForm.rating.$dirty && (newSaleForm.rating.$error.number || newSaleForm.rating.$error.min || newSaleForm.rating.$error.max )">
+					  	<strong>La duración tiene que ser un número entre el 0 y el 10.</strong>
+					</div>
+                </div> 
+            </div>
+            <div class="form-group">
+                <label for="tag" class="col-sm-2 control-label">Etiqueta del producto.</label>
+                <div class="col-sm-10" >
+                    <input type="text" name="tag" class="form-control" ng-model="model.tag" required>
+                </div> 
+            </div>
+
+            <div>
+                <button class="btn btn-primary pull-right" type="submit" ng-disabled="newSaleForm.$invalid">Agregar</button>
+            </div>
+        </div>    
+   
+</div>

@@ -1,0 +1,41 @@
+<div class="container-detalle">
+	<div class="row">
+		<div class="col-sm-12">
+			<img ng-src="{{::model.picture}}" class="img-responsive img-detalle">
+		</div>
+	</div>
+	<div class="container-info-detalle">
+		<div class="row">
+			<div class="col-sm-6">
+				<h2 class="text-primary">Detalles del producto</h2>
+				<div class="wrapper-izquierda">
+					<h3><span class="label label-default">Nombre:</span> {{::model.name}}</h3>
+					<h3><span class="label label-default">Propietario:</span> {{::model.owner}}</h3>
+					<h3><span class="label label-default">Etiquetas:</span> {{model.tag | join}}</h3>
+					<h3><span class="label label-default">Descripción del producto:</span></h3><span>{{::model.description}}</span>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<h2 class="text-danger">Detalles de las pujas</h2>
+				<div class="wrapper-derecha">
+					<h3><span class="label label-warning">Termina en:</span> {{::model.timeToSale}}</h3>
+					<h3 ng-show="model.bid != null"><span class="label label-warning" >Pujas mas alta:</span> {{::model.bid}}</h3>
+					<h3 ng-show="model.bid == null"><span class="label label-warning" >Pujas mas alta:</span> Nadie a pujado todavía.</h3>
+					<h3><span class="label label-warning">Mínima puja de la subasta:</span> {{::model.minimumPrice}}</h3>
+					<h3 ng-show="model.bestBidder != ''"><span class="label label-warning">Actual ganador:</span> {{::model.bestBidder}}</h3>
+					<h3 ng-show="model.bestBidder == ''"><span class="label label-warning">Actual ganador:</span> Aun no hay ninguno.</h3>
+					<form name="newSalePrice" novalidate class="form-horizontal" ng-submit="updateSale()">
+						<input type="number" name="bid" class="form-control" ng-model="model.bid" required min="minimo" placeholder="minimo">
+						{{minimo}}
+						<div ng-show="newSalePrice.bid.$dirty && newSalePrice.bid.$error.required" class="alert alert-danger alert-dismissible" role="alert">
+		                	<strong>El precio mínimo de la primera puja es obligatorio.</strong> 
+		                </div>
+						<div class="alert alert-warning alert-dismissible" role="alert" ng-show="newSalePrice.bid.$dirty && (newSalePrice.bid.$error.number || newSalePrice.bid.$error.min)">
+						  	<strong>El precio mínimo es 1.</strong>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

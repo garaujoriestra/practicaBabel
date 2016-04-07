@@ -1,0 +1,24 @@
+{
+  "name": "practicababel",
+  "version": "1.0.0",
+  "description": "App para repaso de tecnologías como AngularJs, MongoDB y NodeJs",
+  "main": "index.js",
+  "dependencies": {
+    "bower": "^1.7.7",
+    "express-generator": "^4.13.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garaujoriestra/practicaBabel.git"
+  },
+  "author": "Guillermo Araujo Riestra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/garaujoriestra/practicaBabel/issues"
+  },
+  "homepage": "https://github.com/garaujoriestra/practicaBabel#readme"
+}

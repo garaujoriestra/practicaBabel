@@ -1,0 +1,10 @@
+# Node modules
+node_modules/
+
+#server.py cosas del servidor
+nodeServer/node_modules/ 
+
+#Angular cosas del front
+nodeServer/public/bower_components
+nodeServer/public/node_modules
+

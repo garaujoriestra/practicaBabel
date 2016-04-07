@@ -1,0 +1,70 @@
+{
+	"sales": [
+		{
+			"name": "bicicleta",
+			"description": "Bicicleta de última generación, en perfectas condiciones.",
+			"picture": "bici.jpg",
+			"owner": "Guillermo",
+			"minimumPrice": 150,
+			"bid" : 150,
+			"bestBidder": "",
+			"timeToSale": 2,
+			"tag": [ "lifestyle", "motor"]
+		},
+		{
+			"name": "iPhone 3GS",
+			"description": "Iphone 3GS con garantía, totalmente nuevo.",
+			"picture": "iphone.png",
+			"owner": "Kevin",
+			"minimumPrice": 50.00,
+			"bid" : 50.00,
+			"bestBidder": "Pepito",
+			"timeToSale": 3,
+			"tag": [ "electronic", "mobile"]
+		},
+		{
+			"name": "motocicleta",
+			"description": "Motocicleta totalmente nueva, con tan solo 100km...",
+			"picture": "moto.jpg",
+			"owner": "Lautaro",
+			"minimumPrice": 530,
+			"bid" : 530,
+			"bestBidder": "",
+			"timeToSale": 5,
+			"tag": [ "lifestyle", "motor"]
+		},
+		{
+			"name": "boli bic",
+			"description": "Boli Bic recién comprado! Escribe de maravilla",
+			"picture": "bic.jpg",
+			"owner": "Marcos",
+			"minimumPrice": 1,
+			"bid" : 1,
+			"bestBidder": "",
+			"timeToSale": 2,
+			"tag": [ "lifestyle"]
+		},
+		{
+			"name": "Raqueta",
+			"description": "Raqueta de tenis, con solo 2 días de uso.",
+			"picture": "raqueta.png",
+			"owner": "Jorge",
+			"minimumPrice": 30.15,
+			"bid" : 30.15,
+			"bestBidder": "",
+			"timeToSale": 1,
+			"tag": [ "lifestyle"]
+		}
+	],
+
+	"users": [
+		{
+			"name": "Guillermo",
+			"password": "secreta"
+		},
+		{
+			"name": "Kevin",
+			"password": "supersecreta"
+		}
+	]
+}

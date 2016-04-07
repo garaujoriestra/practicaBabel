@@ -1,0 +1,13 @@
+<div ng-controller="ListadoController">
+    <h1 class="text-primary">Subastas en curso</h1>
+    <div class="alert alert-danger" ng-show="uiState == 'error'">
+		Error cargando los datos.
+	</div>
+	<div ng-include="'views/progressBar.html'" ng-show="uiState == 'loading'">
+	</div>
+
+	<div class="jumbotron" ng-show="uiState == 'blank'">
+		<p class="lead">No existen datos.</p>
+	</div>    
+    <sale-list items="model" ng-show="uiState =='ideal'" get-detail-url="getSaleDetailURL(stuff)"></sale-list>     
+</div>

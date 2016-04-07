@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="subastababel" ng-controller="AppController">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title ng-bind-html="model.title">Subasta Babel</title>
+	<link rel="stylesheet" href="dist/style.css" type="text/css">
+
+</head>
+<body>
+
+	<div ng-include="'views/menu.html'" ng-show="user !== ''"></div>
+
+    <div class="container">
+    	<div class="row">
+    		<div class="col-xs-12">
+    			 <div ng-view></div>
+    		</div>
+    	</div>
+    </div>
+	
+	<script src="dist/app.js"></script>
+</body>
+</html>
