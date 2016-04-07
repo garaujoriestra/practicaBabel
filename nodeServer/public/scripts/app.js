@@ -1,5 +1,5 @@
 //Defino el módulo "subastababel"
-angular.module("subastababel",['ngRoute',"URL","ngSanitize"]).config(
+angular.module("subastababel",['ngRoute',"URL","ngSanitize",'angularMoment']).config(
 	["$routeProvider","paths", function($routeProvider,paths){
 		//Configuro las URLS de la app
 		$routeProvider

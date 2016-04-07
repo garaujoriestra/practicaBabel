@@ -42,5 +42,18 @@ angular.module("subastababel").service("APIClient",
             );
             return deferred.promise; 
         }
+        //Put de anuncio para cambiar datos.
+        this.putSale = function(sale){
+            var deferred = $q.defer();
+            $http.put(apiPaths.saleDetail,sale).then(
+                function(response){
+                        deferred.resolve(response.data);
+                },
+                function(response){
+                        deferred.reject(response.data);
+                }
+            );
+            return deferred.promise; 
+        }
     }]
 );

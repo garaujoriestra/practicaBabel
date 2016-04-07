@@ -3,14 +3,15 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require("mongoose");
 var Sale = mongoose.model("Sale");
+var moment = require('moment');
+
 
 //Inserta un anuncio en la bbdd y devuelve un json con ese anuncio.
 router.post("/", function(req, res){
 	//Falta por hacer lo de poner bien el dia para que acabe la subasta.
-	var horaActual = new Date();
-	var horaFinaliza = horaActual.setHours(horaActual.getHours());
+	var fechaExpiracion = moment().add(parseInt(req.body.timeToSale), 'hours');
+	req.body.timeToSale = fechaExpiracion;
 	let sale = new Sale(req.body);
-	sale.timeToSale = horaFinaliza;
 	sale.save(function (err, newRow) {
 		if (err){
 			res.json({result: false, err: err});

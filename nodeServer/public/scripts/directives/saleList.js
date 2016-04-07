@@ -3,6 +3,7 @@ angular.module("subastababel").directive("saleList", function(){
 		restrict:"AE",
 		scope: {
 			model:"=items",
+			timer:"@",
 			getDetailUrl : "&"
 		},
 		templateUrl:"views/saleList.html"

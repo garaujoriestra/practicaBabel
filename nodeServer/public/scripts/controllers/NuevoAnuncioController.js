@@ -12,8 +12,8 @@ angular.module("subastababel").controller("NuevoAnuncioController",
 			$scope.model.bid = null;
 			$scope.model.bestBidder = "";
 			APIClient.createSale($scope.model).then(
-				function(movie){
-					$scope.successMessage = "Movie saved!"
+				function(sale){
+					$scope.successMessage = "Sale saved!"
 					$scope.model = {};
 					$location.url(paths.listado);	
 				},

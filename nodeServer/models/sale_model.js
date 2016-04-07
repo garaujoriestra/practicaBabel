@@ -12,7 +12,7 @@ let saleSchema = mongoose.Schema({
 	minimumPrice: Number,
 	bid: Number,
 	bestBidder: String,
-	timeToSale: Date,
+	timeToSale: String,
 	tag: [String]
 });
 //Lista de los Anuncios

@@ -16,6 +16,10 @@ module.exports = function (grunt) {
                     'bower_components/angular/angular.js',
                     'bower_components/angular-route/angular-route.js',
                     'bower_components/angular-sanitize/angular-sanitize.js',
+                    "bower_components/moment/moment.js",
+                    "bower_components/angular-moment/angular-moment.js",
+                    "bower_components/jquery/dist/jquery.js",
+                    "bower_components/bootstrap/dist/js/bootstrap.js",
                     'scripts/**/*.js',
                     'scripts/*.js'
                 ],

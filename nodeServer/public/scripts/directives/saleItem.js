@@ -3,7 +3,9 @@ angular.module("subastababel").directive("saleItem", function(){
 		restrict: "AE",
 		templateUrl: "views/saleItem.html",
 		scope: {
-			model: "=item"
+			model: "=item",
+			timer:"=",
+			changeSale : "&"
 		}
 	};
 });
