@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default" ng-controller="MenuController">
+<nav class="navbar navbar-default menu-top" ng-controller="MenuController">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -18,8 +18,12 @@
                 <li ng-class="getClassForItem(paths.nuevoAnuncio)">
                     <a href="#{{::paths.nuevoAnuncio}}">Nueva Subasta</a>
                 </li>
+
+                 <li ng-class="getClassForItem(paths.subastasGanadas)">
+                    <a href="#{{::paths.subastasGanadas}}">Subastas Ganadas</a>
+                </li>
             </ul>
-            <button class="btn btn-danger pull-right menu-logout"  ng-click="logout()">Log Out</button>
+            <button class="btn pull-right menu-logout"  ng-click="logout()">Log Out</button>
             <span class="pull-right menu-user">Bienvenido -> {{user}}</button>
         </div>
     </div>

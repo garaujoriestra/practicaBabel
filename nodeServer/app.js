@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 //Modelos
 require("./models/user_model.js");
 require("./models/sale_model.js");
+require("./models/saleWin_model.js");
 
 //Conexión MondoDB
 var conn = require("./lib/connectMongoose");
@@ -18,6 +19,7 @@ var conn = require("./lib/connectMongoose");
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var sales = require('./routes/sales');
+var saleWin = require('./routes/saleWin');
 
 var app = express();
 
@@ -36,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/api/users', users);
 app.use('/api/sales', sales);
+app.use('/api/saleWin', saleWin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

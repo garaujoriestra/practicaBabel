@@ -4,7 +4,7 @@ angular.module("subastababel").controller("MenuController",
 	function($scope,$location,paths,autentication){
 		//Scope init
 		$scope.model = {
-			selectedItem: ""
+			selectedItem: $location.path()
 		};
 		$scope.paths = paths;
 
@@ -12,7 +12,7 @@ angular.module("subastababel").controller("MenuController",
 		//Scope methods
 		$scope.getClassForItem = function(item){
 			if($scope.model.selectedItem == item){
-				return "active";
+				return "activo";
 			}else{
 				return "";
 			}

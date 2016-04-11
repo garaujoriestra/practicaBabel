@@ -47557,7 +47557,7 @@ return jQuery;
 }(jQuery);
 
 ;//Defino el módulo "subastababel"
-angular.module("subastababel",['ngRoute',"URL","ngSanitize",'angularMoment']).config(
+angular.module("subastababel",['ngRoute',"URL","ngSanitize"]).config(
 	["$routeProvider","paths", function($routeProvider,paths){
 		//Configuro las URLS de la app
 		$routeProvider
@@ -47571,6 +47571,8 @@ angular.module("subastababel",['ngRoute',"URL","ngSanitize",'angularMoment']).co
 				templateUrl: 'views/registro.html'
 			}).when(paths.nuevoAnuncio, {
 				templateUrl: 'views/formAnuncio.html'
+			}).when(paths.subastasGanadas, {
+				templateUrl: 'views/subastasGanadas.html'
 			}).when(paths.detalleAnuncio, {
 				templateUrl: 'views/saleItemDetail.html',
 				controller: "SaleDetailController"
@@ -47592,6 +47594,7 @@ angular.module("subastababel",['ngRoute',"URL","ngSanitize",'angularMoment']).co
 		controller.titles[paths.login] = "Login";
 		controller.titles[paths.registro] = "Registro";
 		controller.titles[paths.nuevoAnuncio] = "Nueva Subasta";
+		controller.titles[paths.subastasGanadas] = "Subastas ganadas";
 
 		//Scope init
 		$scope.model = {
@@ -47621,26 +47624,29 @@ angular.module("subastababel",['ngRoute',"URL","ngSanitize",'angularMoment']).co
 	}]
 );
 ;angular.module("subastababel").controller("ListadoController",
-	["$scope","$location","paths","autentication","APIClient","URL","moment",'$timeout', 'datetime',
-	function($scope,$location,paths,autentication,APIClient,URL,moment,$timeout,datetime){
+	["$scope","$location","paths","autentication","APIClient","URL",'$timeout', 'datetime',
+	function($scope,$location,paths,autentication,APIClient,URL,$timeout,datetime){
 		
 		// Scope init
 		$scope.uiState = "loading";
 		$scope.model = [];
 		$scope.user = autentication.getLogin();
+		$scope.primera = true;
 
 
 		//Scope methods
         $scope.getSaleDetailURL = function(sale){
+        	$timeout.cancel(tick);
             return URL.resolve(paths.detalleAnuncio, { id : sale._id});
         }
 		// Service Methods
 		APIClient.getSales().then(
 			function(data){
+				console.log("entro aqui lo primero");
 				processAuctionItems(data.rows);
 				$scope.model = data.rows;
 				$timeout(APIClient.getSales(), 10000);
-				if(data.length == 0){
+				if(data.rows.length == 0){
 					$scope.uiState = "blank";
 				}else{
 					$scope.uiState = "ideal";
@@ -47653,6 +47659,8 @@ angular.module("subastababel",['ngRoute',"URL","ngSanitize",'angularMoment']).co
 			}
 		);
 	    var tick = function () {
+	    	 console.log("entro aqui lo primero  2");
+
 	        $scope.currentTime = moment();
 	        processAuctionItems($scope.model);
 	        $timeout(tick, 1000);
@@ -47661,6 +47669,23 @@ angular.module("subastababel",['ngRoute',"URL","ngSanitize",'angularMoment']).co
 	    	var i = 0;
 	        angular.forEach(data, function (item) {
 	        	item.tiempoRestante = datetime.getRemainigTime(item.timeToSale);
+	        	if(item.tiempoRestante <= "0"){
+	        		for(var i = 0; i < $scope.model.length ; i++){
+	        			if($scope.model[i]._id == item._id){
+	        				$scope.model.splice(i, 1);
+	        			}
+	        		}
+		    		APIClient.deleteSale(item._id).then(
+						function(sale){
+							console.log("Subasta eliminada.");
+							return;
+						},
+						function(error){
+							console.log("Ha habido un error al eliminar la subasta");
+							return;
+						}
+					);
+		    	}
 	        });
 	   	}
 	    $scope.currentTime = moment();
@@ -47676,24 +47701,22 @@ angular.module("subastababel",['ngRoute',"URL","ngSanitize",'angularMoment']).co
 		$scope.uiState = "loading";
 		$scope.model = {};
 		$scope.user = [];
-		$scope.userExiste = "diferente";
+            $scope.wrongPass = "diferente";
+            $scope.wrongUser = "diferente";
 
 		// Scope methods
 		$scope.login = function(){
-                  var user = {name : $scope.model.name, password: $scope.model.password };
-                  autentication.login(user).then(
-                  	function(user){
-                  		if(user.rows.length == 0){
-                  			$scope.userExiste = "";
-                  		}else{
-                  			localStorage.setItem("userLogged", user.rows[0].name);
-                  			$location.url(paths.listado);
-                  		}		
-                  	},
-                  	function(error){
-                  		alert("Ese login no existe");
-                  	}
-                  );			
+                  var user = {name : $scope.model.name, password: $scope.model.password, operacion : "login" };
+                  autentication.login(user,function(res_login){
+                        if(res_login == "pass"){
+                              $scope.wrongPass = "";
+                        }else if(res_login == "usuario"){
+                              $scope.wrongUser = "";
+                        }else{
+                            localStorage.setItem("userLogged", res_login);
+                            $location.url(paths.listado);  
+                        }  
+                  });   		
 		};
 		$scope.signin = function(){
                   $location.url(paths.registro);			
@@ -47706,7 +47729,7 @@ angular.module("subastababel").controller("MenuController",
 	function($scope,$location,paths,autentication){
 		//Scope init
 		$scope.model = {
-			selectedItem: ""
+			selectedItem: $location.path()
 		};
 		$scope.paths = paths;
 
@@ -47714,7 +47737,7 @@ angular.module("subastababel").controller("MenuController",
 		//Scope methods
 		$scope.getClassForItem = function(item){
 			if($scope.model.selectedItem == item){
-				return "active";
+				return "activo";
 			}else{
 				return "";
 			}
@@ -47770,46 +47793,54 @@ angular.module("subastababel").controller("MenuController",
 
 		//Scope methods.
 		$scope.register = function(){
-            var user = {name : $scope.model.name, password: $scope.model.password };
-            autentication.register(user,function(res_login){
-	            if( res_login == ""){
+            var user = {name : $scope.model.name, password: $scope.model.password, operacion : "registro" };
+            autentication.register(user,function(res_register){
+	            if( res_register == ""){
 	            	alert("Ha habido un problema a la hora de loguearte");
-	            }else if (res_login == "existia"){
+	            }else if (res_register == "existia"){
 	            	$scope.wrongRegister = "";
 	            }else{
+	            	localStorage.setItem("userLogged", res_register);
 	            	$location.url(paths.listado);
 	            }	
             });			
 		};
+		$scope.enter = function(){
+                  $location.url(paths.login);			
+		};
 	}]
 );
 ;angular.module("subastababel").controller("SaleDetailController",
-	["$scope","$routeParams","$location","APIClient","paths","moment",'$timeout', 'datetime',
-	function($scope,$routeParams,$location,APIClient,paths,moment,$timeout,datetime){
+	["$scope","$routeParams","$location","APIClient","paths",'$timeout', 'datetime',"autentication",
+	function($scope,$routeParams,$location,APIClient,paths,$timeout,datetime,autentication){
 		//Scope Init
 		$scope.uiState = "loading";
 		$scope.model = {};
 		$scope.minimo = 0;
 		$scope.$emit("ChangeTitle","loading");
-
+		$scope.successMessage = null;
+		$scope.errorMessage = null;
 
 		//Scope Methods
 		$scope.parseInt = function(num){
 	    	return parseInt(num);
 	    }
-        $scope.updateSale = function(){
-        	console.log("Llego justo antes de mandarlo",$scope.model);
-            /*APIClient.putSale($scope.model).then(
+        $scope.updateSale = function(bid){
+        	$scope.model.bid = bid;
+        	$scope.model.bestBidder = autentication.getLogin();
+            APIClient.putSale($routeParams.id,$scope.model).then(
 				function(sale){
-					$scope.successMessage = "sale saved!"	
+					$scope.model.bid = sale.rows[0].bid;
+					$scope.model.bestBidder = sale.rows[0].bestBidder;
+					$scope.successMessage = "Subasta actualizada con éxito";
+					$scope.newSalePrice.$setPristine();
 				},
 				function(error){
-					$scope.errorMessage = "Fatal error. The end is near.";			
+					$location.url(paths.notFound);	
+					$scope.errorMessage = "Ha habido un error con su puja";	
 				}
-			);*/
+			);
         }
-
-
 		//Service Methods.
 		APIClient.getSale($routeParams.id).then(
 			function(sale){
@@ -47834,11 +47865,49 @@ angular.module("subastababel").controller("MenuController",
 	    }
 	    var processAuctionItems = function (data) {
 	    	$scope.timer = datetime.getRemainigTime(data);
+
+	    	if($scope.timer <= "0"){
+	    		APIClient.deleteSale($routeParams.id).then(
+					function(sale){
+						$timeout.cancel(tick);
+						$location.url(paths.listado);
+					},
+					function(error){
+						console.log("Ha habido un error al eliminar la subasta en detalle");
+					}
+				);
+	    	}
 	    }
 	    $scope.currentTime = moment();
 	    $timeout(tick, 1000);
 	    $timeout(APIClient.getSale($routeParams.id), 10000);
 	}]
+);
+;angular.module("subastababel").controller("SubastasGanadasController",
+	["$scope","$location","paths","autentication","APIClient","URL",
+	function($scope,$location,paths,autentication,APIClient,URL){
+		
+		// Scope init
+		$scope.uiState = "loading";
+		$scope.model = [];
+		$scope.user = autentication.getLogin();
+
+		// Service Methods
+		APIClient.getSalesWinName($scope.user).then(
+			function(data){
+				console.log("Lo que me ha devuelto la bbdd es : ", data);
+				$scope.model = data.rows;
+				if(data.rows.length == 0){
+					$scope.uiState = "blank";
+				}else{
+					$scope.uiState = "ideal";
+				}
+			},
+			function(data){
+				console.log("La bbdd me ha devuelto ete error :  ", data);
+			}
+		);
+    }]
 );
 ;angular.module("subastababel").directive("saleItem", function(){
 	return{
@@ -47846,8 +47915,11 @@ angular.module("subastababel").controller("MenuController",
 		templateUrl: "views/saleItem.html",
 		scope: {
 			model: "=item",
+			successMessage : "=",
+			errorMessage : "=",
 			timer:"=",
-			changeSale : "&"
+			newSalePrice : "=",
+			updateSale : "&"
 		}
 	};
 });
@@ -47862,6 +47934,13 @@ angular.module("subastababel").controller("MenuController",
 		templateUrl:"views/saleList.html"
 	};
 });
+;angular.module("subastababel").filter("ago",
+	[function(){
+		return function(text){
+			return moment(text).fromNow();
+		};
+	}]
+); 
 ;angular.module("subastababel").filter("join",
 	["$log",function($log){
 		return function(arr,sep){
@@ -47910,10 +47989,32 @@ angular.module("subastababel").controller("MenuController",
         this.getSales = function(){
             return this.apiRequest(apiPaths.sales);    
         };
+        //Get de Anuncios.
+        this.getSalesWinName = function(saleWinName){
+            var url = URL.resolve(apiPaths.saleWinDetail, {name: saleWinName});
+            return this.apiRequest(url);   
+
+        };
         //Get de anuncio pasandole ID como parámetro.
         this.getSale = function(saleId){
             var url = URL.resolve(apiPaths.saleDetail, {id: saleId});
             return this.apiRequest(url);
+        };
+
+        //Delete de anuncio pasandole ID como parámetro.
+        this.deleteSale = function(saleId){
+            var url = URL.resolve(apiPaths.saleDetail, {id: saleId});
+            var deferred = $q.defer();
+            $http.delete(url).then(
+                function(response){
+                        console.log('El response es  :', response);
+                        deferred.resolve(response.data);
+                },
+                function(response){
+                        deferred.reject(response.data);
+                }
+            );
+            return deferred.promise;
         };
 
         //Post de Anuncio Devolviendo promise.
@@ -47929,10 +48030,25 @@ angular.module("subastababel").controller("MenuController",
             );
             return deferred.promise; 
         }
-        //Put de anuncio para cambiar datos.
-        this.putSale = function(sale){
+        //Post de Anuncio Ganado Devolviendo promise.
+        this.saveSaleWin = function(sale){
             var deferred = $q.defer();
-            $http.put(apiPaths.saleDetail,sale).then(
+            $http.post(apiPaths.sales,sale).then(
+                function(response){
+                        deferred.resolve(response.data);
+                },
+                function(response){
+                        deferred.reject(response.data);
+                }
+            );
+            return deferred.promise; 
+        }
+        //Put de anuncio para cambiar datos.
+        this.putSale = function(saleID,sale){
+            console.log("SaleID: ", saleID);
+            var url = URL.resolve(apiPaths.saleDetail, {id: saleID});
+            var deferred = $q.defer();
+            $http.put(url,sale).then(
                 function(response){
                         deferred.resolve(response.data);
                 },
@@ -47999,9 +48115,19 @@ angular.module("subastababel").controller("MenuController",
 	}
     //Get para loguearse.
     //Falta por acabar para poder comprobar tambien la contraseña.
-	this.login = function(user){
-		var url = URL.resolve(apiPaths.userName, {name: user.name});
-        return this.apiRequest(url);
+	this.login = function(user,cb){
+        $http.post(apiPaths.users,user)
+        .success(function(data) {
+            if(!data.result){
+                cb(data.err);
+            }else{
+                localStorage.setItem("userLogged", user.name);
+                cb(user.name);
+            }
+        })
+        .error(function(data) {
+            cb("");
+        });
 	}
     //Post de usuario
     //Falta acabarlo, para hacer aqui la hash de la pass.
@@ -48011,7 +48137,6 @@ angular.module("subastababel").controller("MenuController",
         	if(!data.result){
         		cb("existia");
         	}else{
-        		localStorage.setItem("userLogged", user.name);
             	cb(user.name);
         	}
         })
@@ -48049,7 +48174,8 @@ angular.module("subastababel").controller("MenuController",
 	users: "/api/users/",
 	sales: "/api/sales/",
 	userName: "/api/users/:name",
-	saleDetail: "/api/sales/:id"
+	saleDetail: "/api/sales/:id",
+	saleWinDetail: "/api/saleWin/:name"
 });
 ;angular.module("subastababel").constant("paths",{
 	home: "/",
@@ -48057,6 +48183,7 @@ angular.module("subastababel").controller("MenuController",
 	login:"/login",
 	registro: "/registro",
 	nuevoAnuncio: "/nuevoAnuncio",
+	subastasGanadas: "/subastasGanadas",
 	detalleAnuncio: "/detalleAnuncio/:id",
 	notFound: "/sorry"
 });

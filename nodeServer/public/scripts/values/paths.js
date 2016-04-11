@@ -4,6 +4,7 @@ angular.module("subastababel").constant("paths",{
 	login:"/login",
 	registro: "/registro",
 	nuevoAnuncio: "/nuevoAnuncio",
+	subastasGanadas: "/subastasGanadas",
 	detalleAnuncio: "/detalleAnuncio/:id",
 	notFound: "/sorry"
 });

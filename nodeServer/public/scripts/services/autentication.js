@@ -32,9 +32,19 @@ angular.module("subastababel").service("autentication",
 	}
     //Get para loguearse.
     //Falta por acabar para poder comprobar tambien la contraseña.
-	this.login = function(user){
-		var url = URL.resolve(apiPaths.userName, {name: user.name});
-        return this.apiRequest(url);
+	this.login = function(user,cb){
+        $http.post(apiPaths.users,user)
+        .success(function(data) {
+            if(!data.result){
+                cb(data.err);
+            }else{
+                localStorage.setItem("userLogged", user.name);
+                cb(user.name);
+            }
+        })
+        .error(function(data) {
+            cb("");
+        });
 	}
     //Post de usuario
     //Falta acabarlo, para hacer aqui la hash de la pass.
@@ -44,7 +54,6 @@ angular.module("subastababel").service("autentication",
         	if(!data.result){
         		cb("existia");
         	}else{
-        		localStorage.setItem("userLogged", user.name);
             	cb(user.name);
         	}
         })

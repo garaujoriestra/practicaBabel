@@ -24,7 +24,8 @@ module.exports = function (grunt) {
                     'scripts/*.js'
                 ],
                 dest: 'dist/app.js'
-            }
+            },
+
         },
 
         uglify: {
@@ -50,6 +51,13 @@ module.exports = function (grunt) {
             js: {
                 files: ['scripts/**/*.js', 'scripts/*.js'],
                 tasks: ['concat']
+            },
+            styles:{
+                files: ["less/*.less"],
+                tasks:["less"],
+                options: {
+                    spawn: fontSizeAdjust = 'initial'
+                }
             }
         }
 

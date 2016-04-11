@@ -28,23 +28,49 @@ router.get('/:name', function(req, res) {
 });
 //Guarda un usuario en la base de dato. Comprobando que no haya otro ya con ese mismo nombre y lo devuelve.
 router.post("/", function(req, res){
-	var query = User.find({name: req.body.name});
-	query.exec(function(err,rows){
-		if(rows.length === 0){
-			var user = new User(req.body);
-			user.password = sha(user.password); //Hago la hash de la pass.
-			user.save(function (err, newRow) {
-				if (err){
-					res.json({result: false, err: err});
+	var operacion = req.body.operacion;
+	if(operacion == "login"){
+		var query = User.find({name: req.body.name});
+		query.exec(function(err,rows){
+			if(rows.length > 0){
+				var passRecibida = sha(req.body.password);
+				if(passRecibida === rows[0].password){
+					res.json({result: true, rows: rows[0]});
+					return;
+				}else{
+					res.json({result: false, err: "pass"}); //Las pass no coinciden.
 					return;
 				}
-				res.json({result: true, rows: newRow});
+			}else{
+				res.json({result: false, err: "usuario"}); //Usuario existe
 				return;
-			});
-		}else{
-			res.json({result: false, err: "Ya existia un usuario con ese nombre"});
-			return;
-		}
-	});
+			}
+		});
+
+	}else if(operacion == "registro"){
+		var query = User.find({name: req.body.name});
+		query.exec(function(err,rows){
+			if(rows.length > 0){
+				res.json({result: false, err: "Ya existía un usuario con ese nombre"});
+				return;
+			}else{
+				var userRecibido = {name : req.body.name, password: req.body.password};
+				var user = new User(userRecibido);
+				user.password = sha(user.password);
+				user.save(function (err, newRow) {
+					if (err){
+						res.json({result: false, err: err});
+						return;
+					}
+					res.json({result: true, rows: newRow});
+					return;
+				});
+			}
+		});	
+		
+	}else{
+		res.json({result: false, err: "Esa operación no existe."});
+		return;
+	}
 });
 module.exports = router;

@@ -1,5 +1,5 @@
 <div ng-controller="ListadoController">
-    <h1 class="text-primary">Subastas en curso</h1>
+    <h1 class="text-primary page-title">Subastas en curso</h1>
     <div class="alert alert-danger" ng-show="uiState == 'error'">
 		Error cargando los datos.
 	</div>
@@ -7,7 +7,7 @@
 	</div>
 
 	<div class="jumbotron" ng-show="uiState == 'blank'">
-		<p class="lead">No existen datos.</p>
+		<p class="lead">Actualmente no hay ninguna subasta disponible! Puedes probar a crear una en el menu superior.</p>
 	</div>    
     <sale-list items="model" timer="timer" ng-show="uiState =='ideal'" get-detail-url="getSaleDetailURL(stuff)"></sale-list>     
 </div>

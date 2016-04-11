@@ -1,0 +1,32 @@
+<div ng-controller="SubastasGanadasController">
+    <h1 class="text-primary page-title">Subastas Ganadas por {{user}}</h1>
+    <div class="alert alert-danger" ng-show="uiState == 'error'">
+		Error cargando los datos.
+	</div>
+	<div ng-include="'views/progressBar.html'" ng-show="uiState == 'loading'">
+	</div>
+
+	<div class="jumbotron" ng-show="uiState == 'blank'">
+		<p class="lead">Aún no has ganado ninguna subasta. <br>Prueba a ir al listado y pujar en alguna puja actual.</p>
+	</div>    
+    <div class="container">
+    	<div class="row">
+    		<div class="col-xs-12">
+    			<ul ng-repeat="item in model">
+    				<li class="li-item-ganador">
+    					<div class="col-sm-6">
+    						<h2 class="name-item">{{::item.sale[0].name}}</small></h2>
+    						<p class="name-item">{{::item.sale[0].description}}</small></p>
+							<h4 class="text-success label label-success">Puja ganadora : {{::item.sale[0].bid}} €</h4>
+							<br>
+			            	<h4 class="text-success label label-primary">La puja finalizo en : {{::item.sale[0].timeToSale | ago}}</h4>
+    					</div>
+    					<div class="col-sm-6">
+    						<img class="img-item img-responsive"  ng-src="{{::item.sale[0].picture}}" width="100">
+    					</div>  
+    				</li>
+    			</ul>
+    		</div>
+    	</div>
+    </div>    
+</div>

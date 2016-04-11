@@ -9,6 +9,7 @@ angular.module("subastababel").controller("AppController",
 		controller.titles[paths.login] = "Login";
 		controller.titles[paths.registro] = "Registro";
 		controller.titles[paths.nuevoAnuncio] = "Nueva Subasta";
+		controller.titles[paths.subastasGanadas] = "Subastas ganadas";
 
 		//Scope init
 		$scope.model = {

@@ -4,8 +4,11 @@ angular.module("subastababel").directive("saleItem", function(){
 		templateUrl: "views/saleItem.html",
 		scope: {
 			model: "=item",
+			successMessage : "=",
+			errorMessage : "=",
 			timer:"=",
-			changeSale : "&"
+			newSalePrice : "=",
+			updateSale : "&"
 		}
 	};
 });

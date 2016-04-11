@@ -1,30 +1,34 @@
 angular.module("subastababel").controller("SaleDetailController",
-	["$scope","$routeParams","$location","APIClient","paths","moment",'$timeout', 'datetime',
-	function($scope,$routeParams,$location,APIClient,paths,moment,$timeout,datetime){
+	["$scope","$routeParams","$location","APIClient","paths",'$timeout', 'datetime',"autentication",
+	function($scope,$routeParams,$location,APIClient,paths,$timeout,datetime,autentication){
 		//Scope Init
 		$scope.uiState = "loading";
 		$scope.model = {};
 		$scope.minimo = 0;
 		$scope.$emit("ChangeTitle","loading");
-
+		$scope.successMessage = null;
+		$scope.errorMessage = null;
 
 		//Scope Methods
 		$scope.parseInt = function(num){
 	    	return parseInt(num);
 	    }
-        $scope.updateSale = function(){
-        	console.log("Llego justo antes de mandarlo",$scope.model);
-            /*APIClient.putSale($scope.model).then(
+        $scope.updateSale = function(bid){
+        	$scope.model.bid = bid;
+        	$scope.model.bestBidder = autentication.getLogin();
+            APIClient.putSale($routeParams.id,$scope.model).then(
 				function(sale){
-					$scope.successMessage = "sale saved!"	
+					$scope.model.bid = sale.rows[0].bid;
+					$scope.model.bestBidder = sale.rows[0].bestBidder;
+					$scope.successMessage = "Subasta actualizada con éxito";
+					$scope.newSalePrice.$setPristine();
 				},
 				function(error){
-					$scope.errorMessage = "Fatal error. The end is near.";			
+					$location.url(paths.notFound);	
+					$scope.errorMessage = "Ha habido un error con su puja";	
 				}
-			);*/
+			);
         }
-
-
 		//Service Methods.
 		APIClient.getSale($routeParams.id).then(
 			function(sale){
@@ -49,6 +53,18 @@ angular.module("subastababel").controller("SaleDetailController",
 	    }
 	    var processAuctionItems = function (data) {
 	    	$scope.timer = datetime.getRemainigTime(data);
+
+	    	if($scope.timer <= "0"){
+	    		APIClient.deleteSale($routeParams.id).then(
+					function(sale){
+						$timeout.cancel(tick);
+						$location.url(paths.listado);
+					},
+					function(error){
+						console.log("Ha habido un error al eliminar la subasta en detalle");
+					}
+				);
+	    	}
 	    }
 	    $scope.currentTime = moment();
 	    $timeout(tick, 1000);

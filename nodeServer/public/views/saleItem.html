@@ -4,41 +4,51 @@
 			<img ng-src="{{::model.picture}}" class="img-responsive img-detalle">
 		</div>
 	</div>
+	
+	<div class="alert alert-success" ng-show="successMessage" ng-bind-html="successMessage">
+	</div>
+	<div class="alert alert-error" ng-show="errorMessage">
+		{{serrorMessage}}
+	</div>
 	<div class="container-info-detalle">
 		<div class="row">
 			<div class="col-sm-6">
-				<h2 class="text-primary">Detalles del producto</h2>
+				<h2 class="text-default text-center col-xs-12">Detalles del producto</h2>
 				<div class="wrapper-izquierda">
-					<h3><span class="label label-default">Nombre:</span> {{::model.name}}</h3>
-					<h3><span class="label label-default">Propietario:</span> {{::model.owner}}</h3>
-					<h3><span class="label label-default">Etiquetas:</span> {{model.tag | join}}</h3>
-					<h3><span class="label label-default">Descripción del producto:</span></h3><span>{{::model.description}}</span>
+					<h3 class="text-center"><span class="label label-default col-xs-12">Nombre:</span> {{::model.name}}</h3>
+					<h3 class="text-center"><span class="label label-default col-xs-12">Propietario:</span> {{::model.owner}}</h3>
+					<h3 class="text-center"><span class="label label-default col-xs-12">Etiquetas:</span> {{model.tag | join}}</h3>
+					<h3 class="text-center"><span class="label label-default col-xs-12">Descripción del producto:</span></h3>
+					<span class="text-center col-xs-12">{{::model.description}}</span>
 				</div>
 			</div>
 			<div class="col-sm-6">
-				<h2 class="text-danger">Detalles de las pujas</h2>
+				<h2 class="text-warning text-center col-xs-12">Detalles de las pujas</h2>
 				<div class="wrapper-derecha">
-					<h3><span class="label label-warning">Termina en:</span> {{ timer | timer}}</h3>
-					<h3 ng-show="model.bid != null"><span class="label label-warning" >Pujas mas alta:</span> {{::model.bid}}</h3>
-					<h3 ng-show="model.bid == null"><span class="label label-warning" >Pujas mas alta:</span> Nadie a pujado todavía.</h3>
-					<h3><span class="label label-warning">Mínima puja de la subasta:</span> {{::model.minimumPrice}}</h3>
-					<h3 ng-show="model.bestBidder != ''"><span class="label label-warning">Actual ganador:</span> {{::model.bestBidder}}</h3>
-					<h3 ng-show="model.bestBidder == ''"><span class="label label-warning">Actual ganador:</span> Aun no hay ninguno.</h3>
-					<form name="newSalePrice" novalidate class="form-horizontal" ng-submit="updateSale()">
+					<h3 class="text-center"><span class="label label-warning col-xs-12">Termina en:</span> {{ timer | timer}}</h3>
+					<h3 class="text-center" ng-show="model.bid != null"><span class="label label-warning col-xs-12" >Pujas mas alta:</span> {{model.bid}}</h3>
+					<h3 class="text-center" ng-show="model.bid == null"><span class="label label-warning col-xs-12" >Pujas mas alta:</span> Nadie a pujado todavía.</h3>
+					<h3 class="text-center"><span class="label label-warning col-xs-12">Mínima puja de la subasta:</span> {{::model.minimumPrice}}</h3>
+					<h3 class="text-center" ng-show="model.bestBidder != ''"><span class="label label-warning col-xs-12">Actual ganador:</span> {{model.bestBidder}}</h3>
+					<h3 class="text-center" ng-show="model.bestBidder == ''"><span class="label label-warning col-xs-12">Actual ganador:</span> Aun no hay ninguno.</h3>
+					<form name="newSalePrice" ng-model="newSalePrice" novalidate class="form-horizontal">
 						<div class="col-sm-8">
-							<input type="number" name="bid" class="form-control" ng-model="model.bid" required min="minimo" placeholder="{{model.minimo}}">
-							<div ng-show="newSalePrice.bid.$dirty && newSalePrice.bid.$error.required" class="alert alert-danger alert-dismissible" role="alert">
-			                	<strong>El precio mínimo de la primera puja es obligatorio.</strong> 
+							<input type="number" name="actualBid" class="form-control" ng-model="actualBid" required min="minimo">
+							<div ng-show="newSalePrice.actualBid.$dirty && newSalePrice.actualBid.$error.required" class="alert alert-danger alert-dismissible" role="alert">
+			                	<strong>Tienes que introducir una puja valida.</strong> 
 			                </div>
-							<div class="alert alert-warning alert-dismissible" role="alert" ng-show="newSalePrice.bid.$dirty && (newSalePrice.bid.$error.number || newSalePrice.bid.$error.min)">
-							  	<strong>El precio mínimo es 1.</strong>
+							<div class="alert alert-warning alert-dismissible" role="alert" ng-show="newSalePrice.actualBid.$dirty && (newSalePrice.actualBid.$error.number || newSalePrice.actualBid.$error.min)">
+							  	<strong>Tiene que introducir un numero válido.</strong>
 							</div>
-							<div class="alert alert-warning alert-dismissible" role="alert" ng-show="newSalePrice.bid.$dirty && (newSalePrice.bid.$viewValue <= model.minimumPrice)">
-							  	<strong>Tiene que ser mayor que la puja mínima o que la última puja</strong>
+							<div class="alert alert-warning alert-dismissible" role="alert" ng-show="newSalePrice.actualBid.$dirty && (newSalePrice.actualBid.$viewValue <= model.minimumPrice) && (model.bid == null)">
+							  	<strong>Tiene que ser mayor que la puja mínima.</strong>
+							</div>
+							<div class="alert alert-warning alert-dismissible" role="alert" ng-show="newSalePrice.actualBid.$dirty && (newSalePrice.actualBid.$viewValue <= model.bid) && (model.bid != null)">
+							  	<strong>Su puja tiene que ser mejor que la más alta actulmente.</strong>
 							</div>
 						</div>
 						<div class="col-sm-4">
-		                    <button class="btn btn-primary" type="submit">
+		                    <button class="btn btn-primary" ng-click="updateSale({bid: actualBid})" ng-disabled="newSalePrice.$invalid">
 		                        Confirmar Puja
 		                    </button>
 						</div>
@@ -47,4 +57,5 @@
 			</div>
 		</div>
 	</div>
+
 </div>

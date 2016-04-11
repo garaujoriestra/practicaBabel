@@ -11,16 +11,20 @@ angular.module("subastababel").controller("RegisterController",
 
 		//Scope methods.
 		$scope.register = function(){
-            var user = {name : $scope.model.name, password: $scope.model.password };
-            autentication.register(user,function(res_login){
-	            if( res_login == ""){
+            var user = {name : $scope.model.name, password: $scope.model.password, operacion : "registro" };
+            autentication.register(user,function(res_register){
+	            if( res_register == ""){
 	            	alert("Ha habido un problema a la hora de loguearte");
-	            }else if (res_login == "existia"){
+	            }else if (res_register == "existia"){
 	            	$scope.wrongRegister = "";
 	            }else{
+	            	localStorage.setItem("userLogged", res_register);
 	            	$location.url(paths.listado);
 	            }	
             });			
+		};
+		$scope.enter = function(){
+                  $location.url(paths.login);			
 		};
 	}]
 );

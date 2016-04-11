@@ -39,4 +39,16 @@ saleSchema.statics.getOneId = function(id,cb){
 		return;
 	});
 };
+//Devuelve un anuncio filtrandolo por su id.
+saleSchema.statics.deleteOneId = function(id,cb){	
+	let query = Sale.find({_id:id});
+	query.remove(function(err,rows){
+		if(err){
+			cb(err);
+			return;
+		}
+		cb(null,rows);
+		return;
+	});
+};
 let Sale = mongoose.model("Sale", saleSchema);	

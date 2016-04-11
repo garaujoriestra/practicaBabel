@@ -1,12 +1,12 @@
 {
 	"sales": [
 		{
-			"name": "bicicleta",
-			"description": "Bicicleta de última generación, en perfectas condiciones.",
-			"picture": "bici.jpg",
+			"name": "Coche",
+			"description": "Cochaco que flipas",
+			"picture": "http://segurouniversia.segurosbroker.com/img/v2.0/Universidades/espera_landing/coche.png",
 			"owner": "Guillermo",
 			"minimumPrice": 150,
-			"bid" : 150,
+			"bid" : null,
 			"bestBidder": "",
 			"timeToSale": 2,
 			"tag": [ "lifestyle", "motor"]
@@ -14,45 +14,34 @@
 		{
 			"name": "iPhone 3GS",
 			"description": "Iphone 3GS con garantía, totalmente nuevo.",
-			"picture": "iphone.png",
+			"picture": "http://store.storeimages.cdn-apple.com/4644/as-images.apple.com/is/image/AppleInc/aos/published/images/i/ph/iphone5s/selection/iphone5s-selection-hero-2015?wid=300&hei=300&fmt=png-alpha&qlt=95&.v=1441814122616",
 			"owner": "Kevin",
 			"minimumPrice": 50.00,
-			"bid" : 50.00,
-			"bestBidder": "Pepito",
+			"bid" : null,
+			"bestBidder": "",
 			"timeToSale": 3,
 			"tag": [ "electronic", "mobile"]
 		},
 		{
 			"name": "motocicleta",
 			"description": "Motocicleta totalmente nueva, con tan solo 100km...",
-			"picture": "moto.jpg",
+			"picture": "http://www.repsol.com/creatividad/productos_y_servicios/lubricantes/gama_moto/es_es/img/Moto2.png",
 			"owner": "Lautaro",
 			"minimumPrice": 530,
-			"bid" : 530,
+			"bid" : null,
 			"bestBidder": "",
 			"timeToSale": 5,
 			"tag": [ "lifestyle", "motor"]
 		},
 		{
 			"name": "boli bic",
-			"description": "Boli Bic recién comprado! Escribe de maravilla",
-			"picture": "bic.jpg",
+			"description": "http://h2266745.stratoserver.net/ImagenesERP/ANGAWA/8430173183965.jpg",
+			"picture": "http://h2266745.stratoserver.net/ImagenesERP/ANGAWA/8430173183965.jpg",
 			"owner": "Marcos",
 			"minimumPrice": 1,
 			"bid" : 1,
 			"bestBidder": "",
 			"timeToSale": 2,
-			"tag": [ "lifestyle"]
-		},
-		{
-			"name": "Raqueta",
-			"description": "Raqueta de tenis, con solo 2 días de uso.",
-			"picture": "raqueta.png",
-			"owner": "Jorge",
-			"minimumPrice": 30.15,
-			"bid" : 30.15,
-			"bestBidder": "",
-			"timeToSale": 1,
 			"tag": [ "lifestyle"]
 		}
 	],

@@ -1,5 +1,5 @@
 <div>
 	<div ng-include="'views/progressBar.html'" ng-show="uiState == 'loading'">
 	</div>
-	<sale-item  ng-show="uiState=='ideal'" timer="timer" item="model"></sale-item>
+	<sale-item  ng-show="uiState=='ideal'" new-sale-price="newSalePrice" update-sale="updateSale(bid)" timer="timer" error-message="errorMessage" success-message="successMessage" item="model"></sale-item>
 </div>

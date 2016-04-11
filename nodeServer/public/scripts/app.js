@@ -1,5 +1,5 @@
 //Defino el módulo "subastababel"
-angular.module("subastababel",['ngRoute',"URL","ngSanitize",'angularMoment']).config(
+angular.module("subastababel",['ngRoute',"URL","ngSanitize"]).config(
 	["$routeProvider","paths", function($routeProvider,paths){
 		//Configuro las URLS de la app
 		$routeProvider
@@ -13,6 +13,8 @@ angular.module("subastababel",['ngRoute',"URL","ngSanitize",'angularMoment']).co
 				templateUrl: 'views/registro.html'
 			}).when(paths.nuevoAnuncio, {
 				templateUrl: 'views/formAnuncio.html'
+			}).when(paths.subastasGanadas, {
+				templateUrl: 'views/subastasGanadas.html'
 			}).when(paths.detalleAnuncio, {
 				templateUrl: 'views/saleItemDetail.html',
 				controller: "SaleDetailController"
