@@ -6732,7 +6732,7 @@ ul {
 .li-item {
   border: 1px solid black;
   background-color: #ccc;
-  height: 650px;
+  height: 680px;
 }
 .img-item {
   width: 100%;
@@ -6773,6 +6773,7 @@ ul {
 .menu-top {
   background-color: #90CAF9;
   color: white;
+  margin-bottom: 20px;
 }
 a {
   color: white!important;
@@ -6797,7 +6798,9 @@ a {
 }
 body {
   font-family: 'Ubuntu', sans-serif;
-  background-color: #E3F2FD;
+  background-image: url("../images/martillo2.png");
+  background-position: left top;
+  background-repeat: no-repeat;
   margin-bottom: 40px;
 }
 .page-title {
@@ -6805,4 +6808,7 @@ body {
   text-align: center;
   font-family: 'Roboto Condensed', serif;
   padding: 20px 0;
+}
+.main-view {
+  margin-top: 80px;
 }

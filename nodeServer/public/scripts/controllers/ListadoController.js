@@ -1,6 +1,6 @@
 angular.module("subastababel").controller("ListadoController",
-	["$scope","$location","paths","autentication","APIClient","URL",'$timeout', 'datetime',
-	function($scope,$location,paths,autentication,APIClient,URL,$timeout,datetime){
+	["$scope","$location","paths","autentication","APIClient","URL",'$timeout', 'datetime',"times",
+	function($scope,$location,paths,autentication,APIClient,URL,$timeout,datetime,times){
 		
 		// Scope init
 		$scope.uiState = "loading";
@@ -11,16 +11,18 @@ angular.module("subastababel").controller("ListadoController",
 
 		//Scope methods
         $scope.getSaleDetailURL = function(sale){
-        	$timeout.cancel(tick);
             return URL.resolve(paths.detalleAnuncio, { id : sale._id});
         }
+        //Para cancelar el $timeout cuando cambio de vista.
+        $scope.$on("$locationChangeSuccess", function(event,currentRoute){
+            times.deleteTimeOut();
+        });
 		// Service Methods
 		APIClient.getSales().then(
 			function(data){
-				console.log("entro aqui lo primero");
 				processAuctionItems(data.rows);
 				$scope.model = data.rows;
-				$timeout(APIClient.getSales(), 10000);
+				//$timeout(APIClient.getSales(), 10000);
 				if(data.rows.length == 0){
 					$scope.uiState = "blank";
 				}else{
@@ -29,17 +31,17 @@ angular.module("subastababel").controller("ListadoController",
 			},
 			function(data){
 				$log.error("Error", data);
-				$timeout(APIClient.getSales(), 10000);
+				//$timeout(APIClient.getSales(), 10000);
 				$scope.uiState = "error";
 			}
 		);
+		//Funcion recursiva con $timeout para ir actualizando el contador cada segundo.
 	    var tick = function () {
-	    	 console.log("entro aqui lo primero  2");
-
-	        $scope.currentTime = moment();
-	        processAuctionItems($scope.model);
-	        $timeout(tick, 1000);
-	    }
+            $scope.currentTime = moment();
+            processAuctionItems($scope.model);
+            times.myTimeOut(tick,1000);
+        }
+        //Comprobando que se acaba alguna subasta para eliminarla y guardarla en la lista de las ganadoras.
 	    var processAuctionItems = function (data) {
 	    	var i = 0;
 	        angular.forEach(data, function (item) {
@@ -63,8 +65,7 @@ angular.module("subastababel").controller("ListadoController",
 		    	}
 	        });
 	   	}
-	    $scope.currentTime = moment();
-	    $timeout(tick, 1000);
-	    $timeout(APIClient.getSales(), 10000);
+	    //$timeout(APIClient.getSales(), 10000);
+	    tick();
     }]
 );

@@ -25,7 +25,7 @@
 			<div class="col-sm-6">
 				<h2 class="text-warning text-center col-xs-12">Detalles de las pujas</h2>
 				<div class="wrapper-derecha">
-					<h3 class="text-center"><span class="label label-warning col-xs-12">Termina en:</span> {{ timer | timer}}</h3>
+					<h3 class="text-center animated pulse"><span class="label label-warning col-xs-12">Termina en:</span> {{ timer | timer}}</h3>
 					<h3 class="text-center" ng-show="model.bid != null"><span class="label label-warning col-xs-12" >Pujas mas alta:</span> {{model.bid}}</h3>
 					<h3 class="text-center" ng-show="model.bid == null"><span class="label label-warning col-xs-12" >Pujas mas alta:</span> Nadie a pujado todavía.</h3>
 					<h3 class="text-center"><span class="label label-warning col-xs-12">Mínima puja de la subasta:</span> {{::model.minimumPrice}}</h3>
@@ -49,7 +49,7 @@
 						</div>
 						<div class="col-sm-4">
 		                    <button class="btn btn-primary" ng-click="updateSale({bid: actualBid})" ng-disabled="newSalePrice.$invalid">
-		                        Confirmar Puja
+		                        Confirmar Puja <img src="../images/mazo.png" height="35" width="35">
 		                    </button>
 						</div>
 					</form>

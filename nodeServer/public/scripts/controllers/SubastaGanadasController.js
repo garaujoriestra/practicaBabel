@@ -10,7 +10,6 @@ angular.module("subastababel").controller("SubastasGanadasController",
 		// Service Methods
 		APIClient.getSalesWinName($scope.user).then(
 			function(data){
-				console.log("Lo que me ha devuelto la bbdd es : ", data);
 				$scope.model = data.rows;
 				if(data.rows.length == 0){
 					$scope.uiState = "blank";

@@ -1,8 +1,8 @@
 angular.module("subastababel").service("APIClient", 
     ["$http", "$q", "apiPaths","URL",
     function($http, $q, apiPaths,URL){
+        
         //Service Methods
-
         //Get devolviendo promesa.
         this.apiRequest = function(url){
             var deferred = $q.defer();
@@ -41,7 +41,6 @@ angular.module("subastababel").service("APIClient",
             var deferred = $q.defer();
             $http.delete(url).then(
                 function(response){
-                        console.log('El response es  :', response);
                         deferred.resolve(response.data);
                 },
                 function(response){
@@ -79,7 +78,6 @@ angular.module("subastababel").service("APIClient",
         }
         //Put de anuncio para cambiar datos.
         this.putSale = function(saleID,sale){
-            console.log("SaleID: ", saleID);
             var url = URL.resolve(apiPaths.saleDetail, {id: saleID});
             var deferred = $q.defer();
             $http.put(url,sale).then(

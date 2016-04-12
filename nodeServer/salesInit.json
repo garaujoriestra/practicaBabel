@@ -2,7 +2,7 @@
 	"sales": [
 		{
 			"name": "Coche",
-			"description": "Cochaco que flipas",
+			"description": "Coche de última generación.",
 			"picture": "http://segurouniversia.segurosbroker.com/img/v2.0/Universidades/espera_landing/coche.png",
 			"owner": "Guillermo",
 			"minimumPrice": 150,
@@ -35,7 +35,7 @@
 		},
 		{
 			"name": "boli bic",
-			"description": "http://h2266745.stratoserver.net/ImagenesERP/ANGAWA/8430173183965.jpg",
+			"description": "Super boli bic, sin usar.",
 			"picture": "http://h2266745.stratoserver.net/ImagenesERP/ANGAWA/8430173183965.jpg",
 			"owner": "Marcos",
 			"minimumPrice": 1,

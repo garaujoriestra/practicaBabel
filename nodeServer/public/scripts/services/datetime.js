@@ -1,4 +1,4 @@
-angular.module("subastababel").factory('datetime',
+    angular.module("subastababel").factory('datetime',
     ['$timeout', function ($timeout) {
     var duration = function (timeSpan) {
         var days = Math.floor(timeSpan / 86400000);

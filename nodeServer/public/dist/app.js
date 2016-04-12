@@ -47624,8 +47624,8 @@ angular.module("subastababel",['ngRoute',"URL","ngSanitize"]).config(
 	}]
 );
 ;angular.module("subastababel").controller("ListadoController",
-	["$scope","$location","paths","autentication","APIClient","URL",'$timeout', 'datetime',
-	function($scope,$location,paths,autentication,APIClient,URL,$timeout,datetime){
+	["$scope","$location","paths","autentication","APIClient","URL",'$timeout', 'datetime',"times",
+	function($scope,$location,paths,autentication,APIClient,URL,$timeout,datetime,times){
 		
 		// Scope init
 		$scope.uiState = "loading";
@@ -47636,16 +47636,18 @@ angular.module("subastababel",['ngRoute',"URL","ngSanitize"]).config(
 
 		//Scope methods
         $scope.getSaleDetailURL = function(sale){
-        	$timeout.cancel(tick);
             return URL.resolve(paths.detalleAnuncio, { id : sale._id});
         }
+        //Para cancelar el $timeout cuando cambio de vista.
+        $scope.$on("$locationChangeSuccess", function(event,currentRoute){
+            times.deleteTimeOut();
+        });
 		// Service Methods
 		APIClient.getSales().then(
 			function(data){
-				console.log("entro aqui lo primero");
 				processAuctionItems(data.rows);
 				$scope.model = data.rows;
-				$timeout(APIClient.getSales(), 10000);
+				//$timeout(APIClient.getSales(), 10000);
 				if(data.rows.length == 0){
 					$scope.uiState = "blank";
 				}else{
@@ -47654,17 +47656,17 @@ angular.module("subastababel",['ngRoute',"URL","ngSanitize"]).config(
 			},
 			function(data){
 				$log.error("Error", data);
-				$timeout(APIClient.getSales(), 10000);
+				//$timeout(APIClient.getSales(), 10000);
 				$scope.uiState = "error";
 			}
 		);
+		//Funcion recursiva con $timeout para ir actualizando el contador cada segundo.
 	    var tick = function () {
-	    	 console.log("entro aqui lo primero  2");
-
-	        $scope.currentTime = moment();
-	        processAuctionItems($scope.model);
-	        $timeout(tick, 1000);
-	    }
+            $scope.currentTime = moment();
+            processAuctionItems($scope.model);
+            times.myTimeOut(tick,1000);
+        }
+        //Comprobando que se acaba alguna subasta para eliminarla y guardarla en la lista de las ganadoras.
 	    var processAuctionItems = function (data) {
 	    	var i = 0;
 	        angular.forEach(data, function (item) {
@@ -47688,9 +47690,8 @@ angular.module("subastababel",['ngRoute',"URL","ngSanitize"]).config(
 		    	}
 	        });
 	   	}
-	    $scope.currentTime = moment();
-	    $timeout(tick, 1000);
-	    $timeout(APIClient.getSales(), 10000);
+	    //$timeout(APIClient.getSales(), 10000);
+	    tick();
     }]
 );
 ;angular.module("subastababel").controller("LoginController",
@@ -47701,22 +47702,22 @@ angular.module("subastababel",['ngRoute',"URL","ngSanitize"]).config(
 		$scope.uiState = "loading";
 		$scope.model = {};
 		$scope.user = [];
-            $scope.wrongPass = "diferente";
-            $scope.wrongUser = "diferente";
+    $scope.wrongPass = "diferente";
+    $scope.wrongUser = "diferente";
 
 		// Scope methods
 		$scope.login = function(){
-                  var user = {name : $scope.model.name, password: $scope.model.password, operacion : "login" };
-                  autentication.login(user,function(res_login){
-                        if(res_login == "pass"){
-                              $scope.wrongPass = "";
-                        }else if(res_login == "usuario"){
-                              $scope.wrongUser = "";
-                        }else{
-                            localStorage.setItem("userLogged", res_login);
-                            $location.url(paths.listado);  
-                        }  
-                  });   		
+      var user = {name : $scope.model.name, password: $scope.model.password, operacion : "login" };
+      autentication.login(user,function(res_login){
+            if(res_login == "pass"){
+                  $scope.wrongPass = "";
+            }else if(res_login == "usuario"){
+                  $scope.wrongUser = "";
+            }else{
+                localStorage.setItem("userLogged", res_login);
+                $location.url(paths.listado);  
+            }  
+      });   		
 		};
 		$scope.signin = function(){
                   $location.url(paths.registro);			
@@ -47811,8 +47812,8 @@ angular.module("subastababel").controller("MenuController",
 	}]
 );
 ;angular.module("subastababel").controller("SaleDetailController",
-	["$scope","$routeParams","$location","APIClient","paths",'$timeout', 'datetime',"autentication",
-	function($scope,$routeParams,$location,APIClient,paths,$timeout,datetime,autentication){
+	["$scope","$routeParams","$location","APIClient","paths",'$timeout', 'datetime',"autentication","times",
+	function($scope,$routeParams,$location,APIClient,paths,$timeout,datetime,autentication,times){
 		//Scope Init
 		$scope.uiState = "loading";
 		$scope.model = {};
@@ -47821,10 +47822,9 @@ angular.module("subastababel").controller("MenuController",
 		$scope.successMessage = null;
 		$scope.errorMessage = null;
 
-		//Scope Methods
-		$scope.parseInt = function(num){
-	    	return parseInt(num);
-	    }
+	    $scope.$on("$locationChangeSuccess", function(event,currentRoute){
+            times.deleteTimeOut();
+        });
         $scope.updateSale = function(bid){
         	$scope.model.bid = bid;
         	$scope.model.bestBidder = autentication.getLogin();
@@ -47846,7 +47846,7 @@ angular.module("subastababel").controller("MenuController",
 			function(sale){
 				processItem(sale);
 				$scope.model = sale.rows[0];
-				$timeout(APIClient.getSale($routeParams.id), 10000);
+				//$timeout(APIClient.getSale($routeParams.id), 10000);
 				$scope.model.minimo = parseInt(sale.rows[0].minimumPrice);
 				$scope.$emit("ChangeTitle",$scope.model.name);
 				$scope.uiState = "ideal";
@@ -47855,21 +47855,21 @@ angular.module("subastababel").controller("MenuController",
 				$location.url(paths.notFound);
 			}
 		);
+		//Funcion recursiva con $timeout para ir actualizando el contador cada segundo.
 		var tick = function () {
 	        $scope.currentTime = moment();
 	        processAuctionItems($scope.model.timeToSale);
-	        $timeout(tick, 1000);
+	        times.myTimeOut(tick,1000);
 	    }
 	    var processItem = function (data) {
 	    	$scope.timer = datetime.getRemainigTime(data.rows[0].timeToSale);
 	    }
+        //Comprobando que se acaba alguna subasta para eliminarla y guardarla en la lista de las ganadoras.
 	    var processAuctionItems = function (data) {
 	    	$scope.timer = datetime.getRemainigTime(data);
-
 	    	if($scope.timer <= "0"){
 	    		APIClient.deleteSale($routeParams.id).then(
 					function(sale){
-						$timeout.cancel(tick);
 						$location.url(paths.listado);
 					},
 					function(error){
@@ -47878,9 +47878,8 @@ angular.module("subastababel").controller("MenuController",
 				);
 	    	}
 	    }
-	    $scope.currentTime = moment();
-	    $timeout(tick, 1000);
-	    $timeout(APIClient.getSale($routeParams.id), 10000);
+	    times.myTimeOut(tick,1000);
+	    //$timeout(APIClient.getSale($routeParams.id), 10000);
 	}]
 );
 ;angular.module("subastababel").controller("SubastasGanadasController",
@@ -47895,7 +47894,6 @@ angular.module("subastababel").controller("MenuController",
 		// Service Methods
 		APIClient.getSalesWinName($scope.user).then(
 			function(data){
-				console.log("Lo que me ha devuelto la bbdd es : ", data);
 				$scope.model = data.rows;
 				if(data.rows.length == 0){
 					$scope.uiState = "blank";
@@ -47967,8 +47965,8 @@ angular.module("subastababel").controller("MenuController",
 ;angular.module("subastababel").service("APIClient", 
     ["$http", "$q", "apiPaths","URL",
     function($http, $q, apiPaths,URL){
+        
         //Service Methods
-
         //Get devolviendo promesa.
         this.apiRequest = function(url){
             var deferred = $q.defer();
@@ -48007,7 +48005,6 @@ angular.module("subastababel").controller("MenuController",
             var deferred = $q.defer();
             $http.delete(url).then(
                 function(response){
-                        console.log('El response es  :', response);
                         deferred.resolve(response.data);
                 },
                 function(response){
@@ -48045,7 +48042,6 @@ angular.module("subastababel").controller("MenuController",
         }
         //Put de anuncio para cambiar datos.
         this.putSale = function(saleID,sale){
-            console.log("SaleID: ", saleID);
             var url = URL.resolve(apiPaths.saleDetail, {id: saleID});
             var deferred = $q.defer();
             $http.put(url,sale).then(
@@ -48149,7 +48145,7 @@ angular.module("subastababel").controller("MenuController",
 		localStorage.setItem("userLogged", "");
 	}
 }]);
-;angular.module("subastababel").factory('datetime',
+;    angular.module("subastababel").factory('datetime',
     ['$timeout', function ($timeout) {
     var duration = function (timeSpan) {
         var days = Math.floor(timeSpan / 86400000);
@@ -48169,6 +48165,19 @@ angular.module("subastababel").controller("MenuController",
         duration: duration,
         getRemainigTime: getRemainigTime
     };
+}]);
+;angular.module("subastababel").service("times",
+ ['$timeout',
+ function($timeout){
+    //Service Methods.
+    var miTimer;
+    this.myTimeOut = function (fn, tiempo) {
+        miTimer = $timeout(fn, tiempo);
+        return miTimer;
+    }
+    this.deleteTimeOut = function(){
+        $timeout.cancel(miTimer);
+    }
 }]);
 ;angular.module("subastababel").value("apiPaths", {
 	users: "/api/users/",

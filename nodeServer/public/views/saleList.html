@@ -3,19 +3,17 @@
         <li class="li-item">
             <h2 class="name-item">{{::item.name}} <small><br>Tags : {{::item.tag | join}}</small></h2>
             <a href="#{{::getDetailUrl({stuff: item})}}">
-                <img class="img-item"  ng-src="{{::item.picture}}" width="100">
+                <img class="img-item animated jello"  ng-src="{{::item.picture}}" width="100">
             </a>
             <div class="wrapper-bottom">
-                <h2 class=" label-danger">{{item.tiempoRestante | timer}}</h2>
-
-
+                <h2 class=" label-danger animated pulse">{{item.tiempoRestante | timer}}</h2>
                 <h4 class="text-success label label-success" ng-show="item.bid != null">Puja actual : {{::item.bid}} €</h4>
                 <h4 class="text-success label label-success" ng-show="item.bid == null">Puja mínimo : {{::item.minimumPrice}} €</h4>
                 <h5><span class="label label-warning" ng-show="item.bestBidder ==''">Nadie ha pujado todavía</span></h5>
                 <h5><span class="label label-warning" ng-show="item.alquilada !==''">{{::item.bestBidder}}</span></h5>
-                <a ng-click="getDetailUrl({stuff: item})">
+                <a href="#{{::getDetailUrl({stuff: item})}}">
                     <button class="btn-lg btn-primary">
-                         Pujar
+                         Pujar <img src="../images/mazo.png" height="35" width="35">
                     </button>
                  </a>
             </div>
