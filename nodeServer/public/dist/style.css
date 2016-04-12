@@ -6812,3 +6812,8 @@ body {
 .main-view {
   margin-top: 80px;
 }
+@media (max-width: 768px) {
+  .label {
+    font-size: 57%!important;
+  }
+}

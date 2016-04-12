@@ -25,7 +25,6 @@ router.post("/", function(req, res){
 router.delete("/:id", function(req, res){
 	let query = Sale.find({_id:req.params.id});
 	query.exec(function(err,rows){
-		console.log("El bestBidder es : ", rows);
 		if(rows[0].bestBidder == ""){
 			Sale.deleteOneId(req.params.id,function(err,rows){
 				if(err){
